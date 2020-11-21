@@ -1,15 +1,15 @@
 package geneticAlgorithm
 
 import (
-	"go-tsp/base"
-	"log"
 	"math/rand"
+
+	"github.com/nvasilev98/go-tsp/base"
 )
 
 // Genetic Algorithm Parameters
 var (
 	mutationRate        float64 = 0.015
-	tournamentSize      int     = 10
+	tournamentSize      int     = 5
 	elitism             bool    = true
 	randomCrossoverRate         = false
 	defCrossoverRate    float32 = 0.7
@@ -34,7 +34,7 @@ func Crossover(p1 base.Tour, p2 base.Tour) base.Tour {
 	// Number of crossover
 	nc := int(CrossoverRate() * float32(size))
 	if nc == 0 {
-		log.Println("no crossover")
+		//	log.Println("no crossover")
 		return p1
 	}
 	// Start positions of cross over for parent 1
@@ -43,7 +43,7 @@ func Crossover(p1 base.Tour, p2 base.Tour) base.Tour {
 	ep := (sp + nc) % size
 	// Parent 2 slots
 	p2s := make([]int, 0, size-nc)
-	log.Println(size, sp, nc, ep) // For debugging
+	//log.Println(size, sp, nc, ep) // For debugging
 	// Populate child with parent 1
 	if sp < ep {
 		for i := 0; i < size; i++ {
@@ -63,8 +63,6 @@ func Crossover(p1 base.Tour, p2 base.Tour) base.Tour {
 		}
 	}
 
-	// For debugging
-	msCity := ""
 	j := 0
 	// Populate child with parent 2 cities that are missing
 	for i := 0; i < size; i++ {
@@ -72,13 +70,8 @@ func Crossover(p1 base.Tour, p2 base.Tour) base.Tour {
 		if !c.ContainCity(p2.GetCity(i)) {
 			c.SetCity(p2s[j], p2.GetCity(i))
 			j++
-			// For debugging
-			msCity += p2.GetCity(i).String() + " "
 		}
 	}
-	log.Println(msCity)
-	log.Println(p2s)
-	log.Println(len(p2s))
 	return c
 }
 
@@ -90,7 +83,6 @@ func Mutation(in *base.Tour) {
 		if rand.Float64() < mutationRate {
 			// Select 2nd city to perform swap
 			p2 := int(float64(in.TourSize()) * rand.Float64())
-			log.Println("Mutation occured", p1, "swap", p2)
 			// Temp store city
 			c1 := in.GetCity(p1)
 			c2 := in.GetCity(p2)
