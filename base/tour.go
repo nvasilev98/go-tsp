@@ -10,31 +10,27 @@ type Tour struct {
 	distance   float64
 }
 
-// InitTour : Initialize tour with cities arranged randomly
 func (a *Tour) InitTour(numberOfCities int) {
 	a.tourCities = make([]City, numberOfCities)
 }
 
-// InitTourCities
 func (a *Tour) InitTourCities(tm TourManager) {
 	a.InitTour(tm.NumberOfCities())
-	// Add all destination cities from TourManager to Tour
+
 	for i := 0; i < tm.NumberOfCities(); i++ {
 		a.SetCity(i, tm.GetCity(i))
 	}
-	// Shuffle cities in tour
+
 	a.tourCities = ShuffleCities(a.tourCities)
 }
 
-// GetCity : Get city based on position in slice
 func (a *Tour) GetCity(tourPosition int) City {
 	return a.tourCities[tourPosition]
 }
 
-// SetCity : Set position of city in tour slice
 func (a *Tour) SetCity(tourPosition int, c City) {
 	a.tourCities[tourPosition] = c
-	// Reset fitness if tour have been altered
+
 	a.fitness = 0
 	a.distance = 0
 }
@@ -48,7 +44,6 @@ func (a *Tour) TourSize() int {
 	return len(a.tourCities)
 }
 
-// TourDistance : Calculates total distance traveled for this tour
 func (a *Tour) TourDistance() float64 {
 	if a.distance == 0 {
 		td := float64(0)
